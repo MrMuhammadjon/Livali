@@ -4,6 +4,7 @@ import { fetchProducts } from '../../features/products/ProductsAuth';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useAppContext } from '../../Context/AppContext';
+import { Link } from 'react-router-dom';
 
 const RenderProducts = () => {
   const dispatch = useDispatch();
@@ -47,37 +48,18 @@ const RenderProducts = () => {
 
   if (status === 'failed') return <p className="text-center text-red-500">Xatolik yuz berdi!</p>;
 
+  console.log(items);
+  
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-4 p-4">
       {items.map(product => (
-        <div key={product.id} className="flex items-center justify-center" data-aos="zoom-out-up">
-          <div className="rounded-xl shadow-lg overflow-hidden w-full max-w-sm bg-white">
-            <div className="w-full h-40 flex items-center justify-center">
-              <img
-                src={product.thumbnail}
-                alt="Product"
-                className="hover:scale-110 transition-transform duration-300 rounded-lg"
-              />
-            </div>
-
-            <div className="px-2 py-4">
-              <div className="">
-                <h2 className={`font-thing text-[12px] ${DarkMode ? 'text-white' : 'text-black'}`}>
-                  {product.title}
-                </h2>
-                <p className={`text-sm mt-1 ${DarkMode ? 'text-gray-500' : 'text-black'}`}>
-                  {product.brand}
-                </p>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <p className={`text-sm font-thing ${DarkMode ? 'text-white' : 'text-black'}`}>
-                  ${product.price}
-                </p>
-              </div>
-            </div>
+        <Link to={`products/${product.id}`} key={product.id} className='max-w-64'>
+          <div className='group'>
+            <img className='group-hover:hidden rounded-lg bg-gray-200 h-50' src={product.thumbnail} alt="img1" />
           </div>
-        </div>
+          <p className='text-sm mt-2'>{product.title}</p>
+          <p className='text-xl'>${product.price}</p>
+        </Link>
       ))}
     </div>
   );
