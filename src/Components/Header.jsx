@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { FiSearch, FiMic, FiBell } from "react-icons/fi";
-const Header = () => {
-  
-  const [active, setActive] = useState("All");
-  const categories = ["All", "Tshirts", "Jeans", "Shoes", "Accessories", "Jackets", "Dresses", "Skirts", "Shorts"];
 
+const Header = () => {
+      const [active, setActive] = useState("All");
+  const categories = ["All", "Tshirts", "Jeans", "Shoes", "Accessories", "Jackets", "Dresses", "Skirts", "Shorts"];
   return (
-    <>
+        <>
       <div className="w-full p-4 bg-white">
         {/* Top section */}
         <div className="flex justify-between items-center mb-4">
@@ -44,8 +43,8 @@ const Header = () => {
         </div>
       </div>
     </>
-
   )
 }
 
 export default Header
+
