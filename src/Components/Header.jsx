@@ -3,12 +3,11 @@ import { FiSearch, FiMic, FiBell } from "react-icons/fi";
 import { useAppContext } from '../Context/AppContext';
 
 const Header = () => {
-    const [active, setActive] = useState("All");
-    const categories = ["All", "Tshirts", "Jeans", "Shoes", "Accessories", "Jackets", "Dresses", "Skirts", "Shorts"];
     const { setDarkMode, DarkMode } = useAppContext();
+
     return (
         <>
-            <div className={`w-full p-4 ${DarkMode ? 'bg-black text-white' : 'bg-white text-black'} shadow-md transition-all duration-300`}>
+            <div className={`w-full px-4 pt-4 ${DarkMode ? 'bg-black text-white' : 'bg-white text-black'} transition-all duration-300`}>
                 {/* Top section */}
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-black">Livali</h1>
@@ -18,39 +17,6 @@ const Header = () => {
                     <FiBell size={24} />
                 </div>
 
-                {/* Search bar */}
-                <form action="">
-                    <div className="flex items-center bg-gray-100 rounded-xl px-4 py-2 mb-4">
-                        <FiSearch className="text-gray-400 mr-2" size={18} />
-                        <input
-                            type="text"
-                            placeholder="Search for clothes..."
-                            className="bg-transparent outline-none flex-1 px-2 py-1 text-sm placeholder-gray-400"
-                        />
-                        <FiMic className="text-gray-400" size={18} />
-                    </div>
-                </form>
-
-                {/* Category filter */}
-                <div className="flex gap-3 overflow-x-auto scrollbar-none">
-                    {categories.map((cat) => (
-                        <button
-                            key={cat}
-                            onClick={() => setActive(cat)}
-                            className={`px-4 py-1 rounded-xl border text-sm font-medium transition-all whitespace-nowrap
-                                   ${active === cat
-                                    ? DarkMode
-                                        ? "bg-white text-black border-white"
-                                        : "bg-black text-white border-black"
-                                    : DarkMode
-                                        ? "bg-black text-white border-white"
-                                        : "bg-white text-black border-black"
-                                }`}
-                        >
-                            {cat}
-                        </button>
-                    ))}
-                </div>
             </div>
         </>
     )

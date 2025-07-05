@@ -12,7 +12,6 @@ const App = () => {
     <AppContextProvider>
       <Header/>
       <Outlet/>
-      <Home/>
       <BarNavigate/>
       <Footer/>
     </AppContextProvider>

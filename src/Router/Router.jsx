@@ -9,6 +9,8 @@ import Welcome from '../page/WelcomPage'
 import Profil from '../page/Profile'
 import ProductDetalis from '../page/ProductDetalis'
 import ProtectedRoute from '../Components/ProtectedRoute'
+import SearchPage from '../page/SearchPage'
+import Favorites from '../page/Favorites'
 import { useAppContext } from '../Context/AppContext'
 
 
@@ -27,7 +29,11 @@ export default function Router() {
       element: hasVisited ? <App /> : <Welcome />,
       errorElement: <ErrorPage />,
       children: [
+        { index: true, element: <Home /> }, // Bosh sahifa uchun
         { path: 'login', element: <Login /> },
+        { path: 'search', element: <SearchPage /> },
+        { path: 'favorites', element: <Favorites /> },
+        { path: 'cart', element: <Order /> },
         { path: 'products/:id', element: <ProductDetalis /> },
         {
           path: 'profile',
