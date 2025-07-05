@@ -1,20 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import axios from "axios";
 
 const ProductDetalis = () => {
-  const { id } = useParams(); // URL'dan mahsulot ID
+  const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [thumbnail, setThumbnail] = useState("");
-
 
   useEffect(() => {
     axios.get(`https://dummyjson.com/products/${id}`)
       .then(res => {
         setProduct(res.data);
-        setThumbnail(res.data.thumbnail); // ADD THIS
+        setThumbnail(res.data.thumbnail);
         setLoading(false);
       })
       .catch(err => {
@@ -23,19 +21,40 @@ const ProductDetalis = () => {
       });
   }, [id]);
 
+  if (loading) {
+    return (
+      <div className="max-w-6xl w-full px-6 py-8 mx-auto">
+        <div className="flex flex-col md:flex-row gap-16">
+          {/* Skeleton Loader - Images */}
+          <div className="flex gap-4 animate-pulse">
+            <div className="flex flex-col gap-3">
+              {[...Array(4)].map((_, i) => (
+                <div
+                  key={i}
+                  className="w-24 h-24 bg-slate-300 rounded border border-gray-200"
+                />
+              ))}
+            </div>
+            <div className="w-[400px] h-[400px] bg-slate-300 rounded border border-gray-200" />
+          </div>
 
+          {/* Skeleton Loader - Info */}
+          <div className="flex-1 space-y-4 animate-pulse">
+            <div className="h-8 bg-slate-300 rounded w-1/2" />
+            <div className="h-4 bg-slate-300 rounded w-1/3" />
+            <div className="h-6 bg-slate-300 rounded w-1/4" />
+            <div className="h-20 bg-slate-300 rounded w-full" />
+            <div className="h-10 bg-slate-300 rounded w-full" />
+            <div className="h-10 bg-slate-300 rounded w-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-  if (loading) return <div className="text-center py-10"><div class="relative flex w-64 animate-pulse gap-2 p-4">
-    <div class="h-12 w-12 rounded-full bg-slate-400"></div>
-    <div class="flex-1">
-      <div class="mb-1 h-5 w-3/5 rounded-lg bg-slate-400 text-lg"></div>
-      <div class="h-5 w-[90%] rounded-lg bg-slate-400 text-sm"></div>
-    </div>
-    <div class="absolute bottom-5 right-0 h-4 w-4 rounded-full bg-slate-400"></div>
-  </div></div>;
-
-  if (!product) return <div className="text-center py-10 text-red-500">Mahsulot topilmadi</div>;
-
+  if (!product) {
+    return <div className="text-center py-10 text-red-500">Mahsulot topilmadi</div>;
+  }
 
   return (
     <div className="max-w-6xl w-full px-6 py-8 mx-auto">
@@ -49,13 +68,21 @@ const ProductDetalis = () => {
         <div className="flex gap-4">
           <div className="flex flex-col gap-3">
             {product.images?.map((img, i) => (
-              <div key={i} onClick={() => setThumbnail(img)} className="border border-gray-300 rounded overflow-hidden cursor-pointer max-w-24">
+              <div
+                key={i}
+                onClick={() => setThumbnail(img)}
+                className="border border-gray-300 rounded overflow-hidden cursor-pointer max-w-24"
+              >
                 <img src={img} alt={`Thumb ${i}`} className="object-cover" />
               </div>
             ))}
           </div>
           <div className="border border-gray-300 rounded overflow-hidden max-w-[400px] max-h-[400px]">
-            <img src={thumbnail} alt="Main" className="w-full h-full object-cover" />
+            <img
+              src={thumbnail || product.thumbnail}
+              alt="Main"
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
 
@@ -99,14 +126,14 @@ const ProductDetalis = () => {
             <button className="w-full py-3.5 font-medium bg-gray-100 text-gray-800 hover:bg-gray-200 transition">
               Add to Cart
             </button>
-            <button className="w-full py-3.5 font-medium bg-indigo-500 text-white hover:bg-indigo-600 transition">
+            <button className="w-full py-3.5 font-medium bg-black text-white hover:bg-white hover:text-black border transition">
               Buy Now
             </button>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductDetalis
+export default ProductDetalis;
