@@ -55,7 +55,7 @@ const RenderProducts = () => {
       {items.map(product => (
         <Link to={`products/${product.id}`} key={product.id} className='max-w-64'>
           <div className='group'>
-            <img className='group-hover:hidden rounded-lg bg-gray-200 h-50' src={product.thumbnail} alt="img1" />
+            <img className='rounded-lg bg-gray-200 h-50' src={product.thumbnail} alt="img1" />
           </div>
           <p className='text-sm mt-2'>{product.title}</p>
           <p className='text-xl'>${product.price}</p>
