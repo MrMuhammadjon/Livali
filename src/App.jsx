@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom'
 import Header from './Components/Header'
 import Footer from './Components/Footer'
 import Home from './page/Home'
+import BarNavigate from './Components/BarNavigate'
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       <Header/>
       <Outlet/>
       <Home/>
+      <BarNavigate/>
       <Footer/>
     </AppContextProvider>
     </>
