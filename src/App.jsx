@@ -3,6 +3,7 @@ import { AppContextProvider } from './Context/AppContext'
 import { Outlet } from 'react-router-dom'
 import Header from './Components/Header'
 import Footer from './Components/Footer'
+import Home from './page/Home'
 
 const App = () => {
   return (
@@ -10,6 +11,7 @@ const App = () => {
     <AppContextProvider>
       <Header/>
       <Outlet/>
+      <Home/>
       <Footer/>
     </AppContextProvider>
     </>

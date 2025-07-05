@@ -27,7 +27,6 @@ export default function Router() {
       element: hasVisited ? <App /> : <Welcome />,
       errorElement: <ErrorPage />,
       children: [
-        { path: 'home', element: <Home /> },
         { path: 'login', element: <Login /> },
         { path: 'products/:id', element: <ProductDetalis /> },
         {

@@ -21,7 +21,7 @@ const WelcomPage = () => {
           className="px-6 py-3 bg-black text-white rounded-full hover:bg-white hover:text-black border-2 cursor-pointer"
           onClick={() => {
             localStorage.setItem('hasVisited', 'true')
-            window.location.href = '/home'
+            window.location.href = '/'
           }}  data-aos="fade-up"  data-aos-duration="1600"
         >
           Start Shopping
