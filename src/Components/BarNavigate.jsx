@@ -12,7 +12,7 @@ const navItems = [
 
 export default function BarNavigate() {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow z-50 rounded-t-3xl px-6 py-3 flex justify-between items-center md:hidden">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow z-50 rounded-t-3xl px-6 py-2 flex justify-between items-center md:hidden">
       {navItems.map((item) => (
         <NavItem key={item.to} {...item} />
       ))}
