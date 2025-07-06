@@ -25,8 +25,8 @@ const RenderProducts = () => {
 
   const ProductSkeleton = () => (
     <div className="animate-pulse rounded-xl shadow-lg overflow-hidden w-full max-w-sm bg-white">
-      <div className="w-full h-64 bg-gray-200"></div>
-      <div className="p-5 space-y-3">
+      <div className="w-full h-50 bg-gray-200"></div>
+      <div className="space-y-3 p-2">
         <div className="h-4 bg-gray-300 rounded w-3/4"></div>
         <div className="h-3 bg-gray-300 rounded w-1/2"></div>
         <div className="h-6 bg-gray-300 rounded w-1/3 mt-4"></div>
@@ -49,12 +49,12 @@ const RenderProducts = () => {
   if (status === 'failed') return <p className="text-center text-red-500">Xatolik yuz berdi!</p>;
 
   console.log(items);
-  
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-4 p-4">
       {items.map(product => (
         <Link to={`products/${product.id}`} key={product.id} className='max-w-64'>
-          <div className='group'>
+          <div className='group bg-gray-200 rounded-2xl'>
             <img className='rounded-lg bg-gray-200 h-50' src={product.thumbnail} alt="img1" />
           </div>
           <p className='text-sm mt-2'>{product.title}</p>

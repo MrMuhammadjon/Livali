@@ -7,6 +7,9 @@ const ProductDetalis = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [thumbnail, setThumbnail] = useState("");
+    useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     axios.get(`https://dummyjson.com/products/${id}`)
