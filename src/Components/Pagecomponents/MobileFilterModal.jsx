@@ -1,5 +1,6 @@
 // MobileFilterModal.jsx
 import React, { useState, useEffect } from 'react';
+import { useAppContext } from '../../Context/AppContext';
 
 const MobileFilterModal = ({ isOpen, onClose }) => {
   const [sort, setSort] = useState("Relevance");
@@ -7,6 +8,8 @@ const MobileFilterModal = ({ isOpen, onClose }) => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [price, setPrice] = useState(19);
   const [category, setCategory] = useState("footwear");
+  const {setShowFilters} = useAppContext();
+  
 
   const sizes = ["37", "38", "39", "40", "41"];
 
@@ -29,18 +32,16 @@ const MobileFilterModal = ({ isOpen, onClose }) => {
       onClick={onClose}
     >
       <div
-        className={`bg-white w-full rounded-t-2xl p-4 max-h-[90vh] overflow-y-auto transform transition-transform duration-300 ${
+        className={`bg-white w-full rounded-t-2xl p-4 max-h-[90vh] overflow-y-auto transform transition-transform duration-300 pb-30 ${
           isOpen ? 'translate-y-0' : 'translate-y-full'
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Filters</h2>
           <button onClick={onClose} className="text-xl">✕</button>
         </div>
 
-        {/* Sort By */}
         <div>
           <p className="font-medium mb-1">Sort By</p>
           <div className="flex flex-wrap gap-2 mb-4">
@@ -48,7 +49,7 @@ const MobileFilterModal = ({ isOpen, onClose }) => {
               <button
                 key={opt}
                 onClick={() => setSort(opt)}
-                className={`px-3 py-1 rounded-full text-sm border ${
+                className={`px-3 py-1 rounded-md text-sm border ${
                   sort === opt ? "bg-black text-white" : "bg-white text-black"
                 }`}
               >
@@ -58,7 +59,6 @@ const MobileFilterModal = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Price */}
         <div className="mb-4">
           <p className="font-medium mb-1">Price</p>
           <input
@@ -72,7 +72,6 @@ const MobileFilterModal = ({ isOpen, onClose }) => {
           <p className="text-sm">Up to ${price}</p>
         </div>
 
-        {/* Categories */}
         <div className="mb-4">
           <p className="font-medium mb-1">Sort by category size</p>
           <div className="flex flex-wrap gap-2">
@@ -80,7 +79,7 @@ const MobileFilterModal = ({ isOpen, onClose }) => {
               <button
                 key={cat}
                 onClick={() => setCategory(cat)}
-                className={`px-3 py-1 border rounded-full text-sm ${
+                className={`px-3 py-1 border rounded-md text-sm ${
                   category === cat ? "bg-black text-white" : "bg-white text-black"
                 }`}
               >
@@ -90,7 +89,6 @@ const MobileFilterModal = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Gender */}
         <div className="mb-4">
           <p className="font-medium mb-1">Select a gender</p>
           <div className="flex gap-2">
@@ -98,7 +96,7 @@ const MobileFilterModal = ({ isOpen, onClose }) => {
               <button
                 key={g}
                 onClick={() => setGender(g)}
-                className={`px-3 py-1 border rounded-full text-sm ${
+                className={`px-3 py-1 border rounded-md text-sm ${
                   gender === g ? "bg-black text-white" : "bg-white text-black"
                 }`}
               >
@@ -108,7 +106,6 @@ const MobileFilterModal = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Sizes */}
         <div className="mb-4">
           <p className="font-medium mb-1">Footwear / {gender}</p>
           <div className="flex flex-wrap gap-2">
@@ -116,7 +113,7 @@ const MobileFilterModal = ({ isOpen, onClose }) => {
               <button
                 key={size}
                 onClick={() => setSelectedSize(size)}
-                className={`px-3 py-1 border rounded-full text-sm ${
+                className={`px-3 py-1 border rounded-md text-sm ${
                   selectedSize === size ? "bg-black text-white" : "bg-white text-black"
                 }`}
               >
@@ -126,8 +123,7 @@ const MobileFilterModal = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Apply Filters */}
-        <button className="w-full bg-black text-white py-2 rounded-xl font-medium mt-4">
+        <button onClick={()=> setShowFilters(false)} className="w-full bg-black text-white py-2 rounded-xl font-medium mt-4">
           Apply Filters
         </button>
       </div>

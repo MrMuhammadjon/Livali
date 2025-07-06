@@ -5,6 +5,8 @@ export const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
     const [user, SetUser] = useState(null);
     const [responsive, setResponsive] = useState(window.innerWidth <= 768);
+    const [showFilters, setShowFilters] = useState(false);
+
 
     const [DarkMode, setDarkMode] = useState(() => {
         return localStorage.getItem('theme') === 'dark';
@@ -17,7 +19,7 @@ export const AppContextProvider = ({ children }) => {
         localStorage.setItem('themeSite', DarkMode ? 'dark' : 'light');
     }, [DarkMode])
 
-    useEffect(()=>{
+    useEffect(() => {
         const handleResize = () => {
             setResponsive(window.innerWidth <= 768);
         };
@@ -35,7 +37,9 @@ export const AppContextProvider = ({ children }) => {
         DarkMode,
         setDarkMode,
         responsive,
-        setResponsive
+        setResponsive,
+        showFilters,
+        setShowFilters
     }
 
     return (

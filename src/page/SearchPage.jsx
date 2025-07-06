@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { FiSearch, FiMic } from "react-icons/fi";
 import { Sliders } from 'lucide-react';
 import MobileFilterModal from '../Components/Pagecomponents/MobileFilterModal';
+import { useAppContext } from '../Context/AppContext';
 
 const SearchPage = () => {
-  const [showFilters, setShowFilters] = useState(false);
+ 
+  const {showFilters, setShowFilters} = useAppContext();
 
   return (
     <>
