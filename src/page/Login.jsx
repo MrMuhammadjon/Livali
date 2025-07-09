@@ -29,9 +29,10 @@ const Login = () => {
       </div>
       <form onSubmit={handleLogin} className="flex flex-col gap-2 p-4">
         <input
-          type="text"
+          type='text'
           placeholder="Telefon raqamingiz"
           value={phone}
+          minLength={11}
           className="border px-2 py-2"
           onChange={(e) => setPhone(e.target.value)}
         />
