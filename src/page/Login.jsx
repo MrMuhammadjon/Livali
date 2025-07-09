@@ -32,7 +32,7 @@ const Login = () => {
           type='text'
           placeholder="Telefon raqamingiz"
           value={phone}
-          minLength={11}
+          minLength={9}
           className="border px-2 py-2"
           onChange={(e) => setPhone(e.target.value)}
         />
