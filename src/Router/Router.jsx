@@ -1,18 +1,19 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
+import React, { lazy, Suspense } from 'react';
 
 import App from '../App'
 import Home from '../page/Home'
-import Login from '../page/Login'
-import Order from '../page/Order'
-import ErrorPage from '../page/ErrorPage'
-import Welcome from '../page/WelcomPage'
-import Profil from '../page/Profile'
-import ProductDetalis from '../page/ProductDetalis'
+const Login = lazy(() => import('../page/Login'));
+const Order = lazy(() => import('../page/Order'));
+const ErrorPage = lazy(() => import('../page/ErrorPage'));
+const Welcome = lazy(() => import('../page/WelcomPage'));
+const Profil = lazy(() => import('../page/Profile'));
+const ProductDetalis = lazy(() => import('../page/ProductDetalis'));
+const SearchPage = lazy(() => import('../page/SearchPage'));
+const Favorites = lazy(() => import('../page/Favorites'));
+const Register = lazy(() => import('../page/Register'));
 import ProtectedRoute from '../Components/ProtectedRoute'
-import SearchPage from '../page/SearchPage'
-import Favorites from '../page/Favorites'
 import { useAppContext } from '../Context/AppContext'
-import Register from '../page/Register'
 
 
 

@@ -10,7 +10,7 @@ import { HeartIcon } from 'lucide-react';
 const RenderProducts = () => {
   const dispatch = useDispatch();
   const { items, status } = useSelector(state => state.products);
-  const { DarkMode, favorites, toggleFavorite } = useAppContext();
+  const { DarkMode, favorites, toggleFavorite, active } = useAppContext();
   const navigate = useNavigate();
 
   // Init AOS
@@ -48,12 +48,19 @@ const RenderProducts = () => {
     );
   }
 
+  const filteredProducts =
+    active === "All"
+      ? items
+      : items.filter(product =>
+        product.category.toLowerCase().includes(active.toLowerCase())
+      );
+
 
   if (status === 'failed') return <p className="text-center text-red-500">Xatolik yuz berdi!</p>;
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-4 p-4">
-      {items.map(product => {
+      {filteredProducts.map(product => {
         const isFavorite = favorites.some(fav => fav.id === product.id);
 
         return (
@@ -71,10 +78,10 @@ const RenderProducts = () => {
               >
                 <HeartIcon
                   className={`h-6 w-6 ${isFavorite
-                      ? 'text-red-500'
-                      : DarkMode
-                        ? 'text-gray-800'
-                        : 'text-gray-500'
+                    ? 'text-red-500'
+                    : DarkMode
+                      ? 'text-gray-800'
+                      : 'text-gray-500'
                     }`}
                 />
               </button>

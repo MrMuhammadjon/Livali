@@ -6,6 +6,7 @@ export const AppContextProvider = ({ children }) => {
     const [user, SetUser] = useState(null);
     const [responsive, setResponsive] = useState(window.innerWidth <= 768);
     const [showFilters, setShowFilters] = useState(false);
+    const [active, setActive] = useState("All");
     const [favorites, setFavorites] = useState(() => {
         const saved = localStorage.getItem('favorites');
         return saved ? JSON.parse(saved) : [];
@@ -51,6 +52,8 @@ export const AppContextProvider = ({ children }) => {
         localStorage.setItem('favorites', JSON.stringify(favorites));
     }, [favorites]);
 
+    
+
 
 
     const ContextValue = {
@@ -64,6 +67,8 @@ export const AppContextProvider = ({ children }) => {
         setShowFilters,
         favorites,
         toggleFavorite,
+        active,
+        setActive
     }
 
     return (

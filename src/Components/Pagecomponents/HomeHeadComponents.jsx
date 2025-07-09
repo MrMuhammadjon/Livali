@@ -1,12 +1,20 @@
-import React, { useState }  from 'react'
+import React, { useState, useEffect } from 'react'
 import { FiSearch, FiMic, FiBell } from "react-icons/fi";
 import { useAppContext } from '../../Context/AppContext';
 
 
 const HomeHeadComponents = () => {
-    const [active, setActive] = useState("All");
-    const categories = ["All", "Tshirts", "Jeans", "Shoes", "Accessories", "Jackets", "Dresses", "Skirts", "Shorts"];
-    const { setDarkMode, DarkMode } = useAppContext();
+    const { setActive, active, DarkMode } = useAppContext();
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        fetch('https://dummyjson.com/products/categories')
+            .then(res => res.json())
+            .then(data => setCategories(['All', ...data]));
+    }, []);
+
+    
+    
     return (
         <div className='w-full p-4 pt-0 flex flex-col gap-2'>
             <form action="">
