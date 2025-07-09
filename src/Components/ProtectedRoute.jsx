@@ -1,9 +1,10 @@
+import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = localStorage.getItem("userToken"); // yoki context, reduxdan olingan auth
+  const user = useSelector((state) => state.auth.user); // yoki state.auth.token
 
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
+  return user ? children : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;

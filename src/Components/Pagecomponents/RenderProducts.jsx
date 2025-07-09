@@ -48,8 +48,6 @@ const RenderProducts = () => {
 
   if (status === 'failed') return <p className="text-center text-red-500">Xatolik yuz berdi!</p>;
 
-  console.log(items);
-
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-4 p-4">
       {items.map(product => (

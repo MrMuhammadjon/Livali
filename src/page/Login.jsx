@@ -1,51 +1,46 @@
-// LoginPage.jsx
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../features/auth/authSlice';
+// src/pages/Login.jsx
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../features/auth/authSlice";
+import { Navigate, useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
+const Login = () => {
   const dispatch = useDispatch();
-  const { user, loading, error } = useSelector((state) => state.auth);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState("");
 
-  console.log(user);
-  
-  
-  const handleLogin = (e) => {
+  const { loading, error, user } = useSelector((state) => state.auth);
+
+  const navigate = useNavigate()
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    dispatch(loginUser({ username, password }));
+    try {
+      await dispatch(loginUser({ phone })).unwrap(); // faqat telefon raqam bilan login
+      navigate('/');
+    } catch (err) {
+      console.error("Login xatoligi:", err);
+    }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-4 bg-white rounded shadow">
-      <h2 className="text-xl font-bold mb-4">Login</h2>
-      {error && <p className="text-red-500">{error}</p>}
-      <form onSubmit={handleLogin} className="flex flex-col gap-3">
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="border px-3 py-2 rounded"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="border px-3 py-2 rounded"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-black text-white py-2 rounded hover:opacity-90"
-        >
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
-    </div>
+    <form onSubmit={handleLogin} className="flex flex-col gap-2 p-4">
+      <input
+        type="text"
+        placeholder="Telefon raqamingiz"
+        value={phone}
+        className="border"
+        onChange={(e) => setPhone(e.target.value)}
+      />
+      <button type="submit" className="border bg-black text-white" disabled={loading}>
+        {loading ? "Tekshirilmoqda..." : "Kirish"}
+      </button>
+      <button onClick={() => navigate('/register')} className="border bg-blue-500 text-white">
+        Register
+      </button>
+      {user && <p>Xush kelibsiz, {user.name}!</p>}
+      {error && <p className="text-red-500">Xatolik: {error}</p>}
+    </form>
   );
 };
 
-export default LoginPage;
+export default Login;
