@@ -6,6 +6,10 @@ export const AppContextProvider = ({ children }) => {
     const [user, SetUser] = useState(null);
     const [responsive, setResponsive] = useState(window.innerWidth <= 768);
     const [showFilters, setShowFilters] = useState(false);
+    const [favorites, setFavorites] = useState(() => {
+        const saved = localStorage.getItem('favorites');
+        return saved ? JSON.parse(saved) : [];
+    });
 
 
     const [DarkMode, setDarkMode] = useState(() => {
@@ -31,6 +35,24 @@ export const AppContextProvider = ({ children }) => {
         return () => window.removeEventListener('resize', handleResize);
     })
 
+
+    const toggleFavorite = (product) => {
+        setFavorites((prev) => {
+            const exists = prev.find((item) => item.id === product.id);
+            if (exists) {
+                return prev.filter((item) => item.id !== product.id); // remove
+            } else {
+                return [...prev, product]; // add
+            }
+        });
+    };
+
+    useEffect(() => {
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+    }, [favorites]);
+
+
+
     const ContextValue = {
         user,
         SetUser,
@@ -39,7 +61,9 @@ export const AppContextProvider = ({ children }) => {
         responsive,
         setResponsive,
         showFilters,
-        setShowFilters
+        setShowFilters,
+        favorites,
+        toggleFavorite,
     }
 
     return (

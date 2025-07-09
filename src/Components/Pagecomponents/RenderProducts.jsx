@@ -4,12 +4,14 @@ import { fetchProducts } from '../../features/products/ProductsAuth';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useAppContext } from '../../Context/AppContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { HeartIcon } from 'lucide-react';
 
 const RenderProducts = () => {
   const dispatch = useDispatch();
   const { items, status } = useSelector(state => state.products);
-  const { DarkMode } = useAppContext();
+  const { DarkMode, favorites, toggleFavorite } = useAppContext();
+  const navigate = useNavigate();
 
   // Init AOS
   useEffect(() => {
@@ -46,19 +48,42 @@ const RenderProducts = () => {
     );
   }
 
+
   if (status === 'failed') return <p className="text-center text-red-500">Xatolik yuz berdi!</p>;
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-4 p-4">
-      {items.map(product => (
-        <Link to={`products/${product.id}`} key={product.id} className='max-w-64'>
-          <div className='group bg-gray-200 rounded-2xl'>
-            <img className='rounded-lg bg-gray-200 h-50' src={product.thumbnail} alt="img1" />
+      {items.map(product => {
+        const isFavorite = favorites.some(fav => fav.id === product.id);
+
+        return (
+          <div data-aos="fade-up" onClick={() => navigate(`products/${product.id}`)} key={product.id} className='max-w-64 relative'>
+            <div className='group bg-gray-200 rounded-2xl'>
+              <img className='rounded-lg bg-gray-200 h-48 w-full object-cover' src={product.thumbnail} alt={product.title} />
+            </div>
+            <div className='absolute right-0 bottom-0 z-50'>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleFavorite(product);
+                }}
+                className='bg-white rounded-full p-2 m-2 shadow-lg hover:bg-gray-100 transition-all hover:scale-110'
+              >
+                <HeartIcon
+                  className={`h-6 w-6 ${isFavorite
+                      ? 'text-red-500'
+                      : DarkMode
+                        ? 'text-gray-800'
+                        : 'text-gray-500'
+                    }`}
+                />
+              </button>
+            </div>
+            <p className='text-sm mt-2'>{product.title}</p>
+            <p className='text-xl'>${product.price}</p>
           </div>
-          <p className='text-sm mt-2'>{product.title}</p>
-          <p className='text-xl'>${product.price}</p>
-        </Link>
-      ))}
+        );
+      })}
     </div>
   );
 };
