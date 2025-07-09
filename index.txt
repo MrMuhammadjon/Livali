@@ -8,3 +8,25 @@ https://6801cb0081c7e9fbcc436080.mockapi.io/User
 
 
 https://686bac8ee559eba908739191.mockapi.io/users
+
+
+          <div
+            key={idx}
+            className="bg-white rounded-md flex items-center justify-between px-4 py-3 shadow-sm"
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-lg">{item.icon}</span>
+              <span>{item.label}</span>
+            </div>
+            <FiChevronRight className="text-gray-400" />
+          </div>
+
+          const menuItems = [
+  { icon: <FaBoxOpen />, label: "My Orders" },
+  { icon: <FaUser />, label: "My Details" },
+  { icon: <FaMapMarkerAlt />, label: "Address Book" },
+  { icon: <FaCreditCard />, label: "Payment Methods" },
+  { icon: <FiBell />, label: "Notifications" },
+  { icon: <FaQuestionCircle />, label: "FAQs" },
+  { icon: <FaHeadphones />, label: "Help Center" },
+];

@@ -2,20 +2,30 @@ import React from "react";
 import { FiChevronRight, FiBell } from "react-icons/fi";
 import { BiLogOut } from "react-icons/bi";
 import { FaBoxOpen, FaUser, FaMapMarkerAlt, FaCreditCard, FaQuestionCircle, FaHeadphones } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { logout } from "../features/auth/authSlice"; // Import your logout action
 
-const menuItems = [
-  { icon: <FaBoxOpen />, label: "My Orders" },
-  { icon: <FaUser />, label: "My Details" },
-  { icon: <FaMapMarkerAlt />, label: "Address Book" },
-  { icon: <FaCreditCard />, label: "Payment Methods" },
-  { icon: <FiBell />, label: "Notifications" },
-  { icon: <FaQuestionCircle />, label: "FAQs" },
-  { icon: <FaHeadphones />, label: "Help Center" },
-];
 
 const Profile = () => {
+  const dispatch = useDispatch();
+
+  const menuItems = [
+    { icon: <FaBoxOpen />, label: "My Orders" },
+    { icon: <FaUser />, label: "My Details" },
+    { icon: <FaMapMarkerAlt />, label: "Address Book" },
+    { icon: <FaCreditCard />, label: "Payment Methods" },
+    { icon: <FiBell />, label: "Notifications" },
+    { icon: <FaQuestionCircle />, label: "FAQs" },
+    { icon: <FaHeadphones />, label: "Help Center" },
+  ];
+
+
+  
+  const handleLogout = () => {
+    dispatch(logout());
+  };
   return (
-    <div className="max-w-sm mx-auto bg-gray-100 min-h-screen p-2 text-sm">
+    <div className="mx-auto bg-gray-100 min-h-screen p-4 text-sm">
       {/* Header */}
       <div className="flex items-center justify-between p-4 bg-white shadow-sm rounded-md mb-2">
         <button>&larr;</button>
@@ -41,7 +51,7 @@ const Profile = () => {
 
       {/* Logout */}
       <div className="mt-6">
-        <button className="flex items-center gap-2 text-red-500 text-sm font-medium px-4 py-3 w-full bg-white rounded-md shadow-sm">
+        <button onClick={handleLogout} className="flex items-center gap-2 text-red-500 text-sm font-medium px-4 py-3 w-full bg-white rounded-md shadow-sm">
           <BiLogOut />
           Logout
         </button>
