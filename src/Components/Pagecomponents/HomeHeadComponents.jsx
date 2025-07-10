@@ -4,7 +4,7 @@ import { useAppContext } from '../../Context/AppContext';
 
 
 const HomeHeadComponents = () => {
-    const { setActive, active, DarkMode } = useAppContext();
+    const { setActive, active, DarkMode, searcgquery, setSearchQuery } = useAppContext();
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
@@ -14,7 +14,7 @@ const HomeHeadComponents = () => {
     }, []);
 
 
-
+    
     return (
         <div className='w-full p-4 pt-0 flex flex-col gap-2'>
             <form action="">
@@ -24,6 +24,8 @@ const HomeHeadComponents = () => {
                         type="text"
                         placeholder="Search for clothes..."
                         className="bg-transparent outline-none flex-1 px-2 py-1 text-sm placeholder-gray-400"
+                        value={searcgquery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                     />
                     <FiMic className="text-gray-400" size={18} />
                 </div>

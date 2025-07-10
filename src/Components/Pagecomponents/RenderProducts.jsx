@@ -10,7 +10,7 @@ import { HeartIcon } from 'lucide-react';
 const RenderProducts = () => {
   const dispatch = useDispatch();
   const { items, status } = useSelector(state => state.products);
-  const { DarkMode, favorites, toggleFavorite, active } = useAppContext();
+  const { DarkMode, favorites, toggleFavorite, active, debouncedSearchTerm } = useAppContext();
   const navigate = useNavigate();
 
   // Init AOS
@@ -48,10 +48,15 @@ const RenderProducts = () => {
     );
   }
 
-const filteredProducts =
-  active === "all"
-    ? items
-    : items.filter(product => product.category === active);
+  const filteredProducts = items
+    .filter(product =>
+      active === "all" ? true : product.category === active
+    ).filter(product =>
+      (product.title?.toLowerCase() || "").includes((debouncedSearchTerm || "").toLowerCase())
+    );
+
+  console.log("Filtered Products:", filteredProducts, "Active Category:", active, "Search Term:", debouncedSearchTerm);
+
 
 
   if (status === 'failed') return <p className="text-center text-red-500">Xatolik yuz berdi!</p>;

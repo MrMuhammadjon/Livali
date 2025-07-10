@@ -1,4 +1,4 @@
-import { createContext, use, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 export const AppContext = createContext();
 
@@ -11,8 +11,9 @@ export const AppContextProvider = ({ children }) => {
         const saved = localStorage.getItem('favorites');
         return saved ? JSON.parse(saved) : [];
     });
-    const [searcgquery, setSearchQuery] = useState({});
+    const [searcgquery, setSearchQuery] = useState("");
     const [isSeller, setIsSeller] = useState(false);
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
 
 
     const [DarkMode, setDarkMode] = useState(() => {
@@ -54,7 +55,18 @@ export const AppContextProvider = ({ children }) => {
         localStorage.setItem('favorites', JSON.stringify(favorites));
     }, [favorites]);
 
-    
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedSearchTerm(searcgquery);
+        }, 400); // foydalanuvchi yozishni 400ms ichida tugatmasa, so‘rov yuboriladi
+
+        return () => {
+            clearTimeout(handler); // keyin harf yozilsa, avvalgi timeout to‘xtatiladi
+        };
+    }, [searcgquery]);
+
+    console.log("🔍 searchTerm:", searcgquery);
 
 
 
