@@ -6,7 +6,7 @@ export const AppContextProvider = ({ children }) => {
     const [user, SetUser] = useState(null);
     const [responsive, setResponsive] = useState(window.innerWidth <= 768);
     const [showFilters, setShowFilters] = useState(false);
-    const [active, setActive] = useState("All");
+    const [active, setActive] = useState("all");
     const [favorites, setFavorites] = useState(() => {
         const saved = localStorage.getItem('favorites');
         return saved ? JSON.parse(saved) : [];

@@ -48,12 +48,10 @@ const RenderProducts = () => {
     );
   }
 
-  const filteredProducts =
-    active === "All"
-      ? items
-      : items.filter(product =>
-        product.category.toLowerCase().includes(active.toLowerCase())
-      );
+const filteredProducts =
+  active === "all"
+    ? items
+    : items.filter(product => product.category === active);
 
 
   if (status === 'failed') return <p className="text-center text-red-500">Xatolik yuz berdi!</p>;

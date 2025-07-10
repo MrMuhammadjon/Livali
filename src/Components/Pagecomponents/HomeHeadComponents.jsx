@@ -10,11 +10,11 @@ const HomeHeadComponents = () => {
     useEffect(() => {
         fetch('https://dummyjson.com/products/categories')
             .then(res => res.json())
-            .then(data => setCategories(['All', ...data]));
+            .then(data => setCategories([{ slug: "all", name: "All" }, ...data]));
     }, []);
 
-    
-    
+
+
     return (
         <div className='w-full p-4 pt-0 flex flex-col gap-2'>
             <form action="">
@@ -31,12 +31,12 @@ const HomeHeadComponents = () => {
 
             {/* Category filter */}
             <div className="flex gap-3 overflow-x-auto scrollbar-none">
-                {categories.map((cat) => (
+                {categories.map((cat, index) => (
                     <button
-                        key={cat}
-                        onClick={() => setActive(cat)}
+                        key={index}
+                        onClick={() => setActive(cat.slug)}
                         className={`px-5 py-2 rounded-xl border text-sm font-medium transition-all whitespace-nowrap
-                                   ${active === cat
+      ${active === cat.slug
                                 ? DarkMode
                                     ? "bg-white text-black border-white"
                                     : "bg-black text-white border-black"
@@ -45,7 +45,7 @@ const HomeHeadComponents = () => {
                                     : "bg-white text-black border-black"
                             }`}
                     >
-                        {cat}
+                        {cat.name}
                     </button>
                 ))}
             </div>
