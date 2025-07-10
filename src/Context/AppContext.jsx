@@ -11,6 +11,8 @@ export const AppContextProvider = ({ children }) => {
         const saved = localStorage.getItem('favorites');
         return saved ? JSON.parse(saved) : [];
     });
+    const [searcgquery, setSearchQuery] = useState({});
+    const [isSeller, setIsSeller] = useState(false);
 
 
     const [DarkMode, setDarkMode] = useState(() => {
@@ -68,7 +70,11 @@ export const AppContextProvider = ({ children }) => {
         favorites,
         toggleFavorite,
         active,
-        setActive
+        setActive,
+        searcgquery,
+        setSearchQuery,
+        isSeller,
+        setIsSeller
     }
 
     return (
