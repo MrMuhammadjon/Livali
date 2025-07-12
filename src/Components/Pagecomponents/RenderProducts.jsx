@@ -55,7 +55,6 @@ const RenderProducts = () => {
       (product.title?.toLowerCase() || "").includes((debouncedSearchTerm || "").toLowerCase())
     );
 
-  console.log("Filtered Products:", filteredProducts, "Active Category:", active, "Search Term:", debouncedSearchTerm);
 
 
 
@@ -71,7 +70,7 @@ const RenderProducts = () => {
             <div className='group bg-gray-200 rounded-2xl'>
               <img className='rounded-lg bg-gray-200 h-48 w-full object-cover' src={product.thumbnail} alt={product.title} />
             </div>
-            <div className='absolute right-0 bottom-0 z-50'>
+            <div className='absolute right-0 bottom-13.5 z-50'>
               <button
                 onClick={(e) => {
                   e.stopPropagation();

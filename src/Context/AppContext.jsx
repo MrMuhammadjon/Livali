@@ -14,6 +14,15 @@ export const AppContextProvider = ({ children }) => {
     const [searcgquery, setSearchQuery] = useState("");
     const [isSeller, setIsSeller] = useState(false);
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+    const [AddToCart, setAddToCart] = useState(() => {
+        const savedcart = localStorage.getItem('cart');
+        try {
+            const parsed = JSON.parse(savedcart);
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (e) {
+            return []; // fallback if JSON is invalid
+        }
+    });
 
 
     const [DarkMode, setDarkMode] = useState(() => {
@@ -37,7 +46,7 @@ export const AppContextProvider = ({ children }) => {
         handleResize();
 
         return () => window.removeEventListener('resize', handleResize);
-    })
+    }, [])
 
 
     const toggleFavorite = (product) => {
@@ -50,6 +59,21 @@ export const AppContextProvider = ({ children }) => {
             }
         });
     };
+
+    const toggleCart = (product) => {
+        console.log("Toggle Cart:", product);
+
+        setAddToCart((prev) => {
+            const cart = prev.find((item) => item.id === product.id);
+            if (cart) {
+                return prev.filter((item) => item.id !== product.id); // remove
+            } else {
+                return [...prev, product]; // add
+            }
+        });
+    };
+
+
 
     useEffect(() => {
         localStorage.setItem('favorites', JSON.stringify(favorites));
@@ -65,8 +89,6 @@ export const AppContextProvider = ({ children }) => {
             clearTimeout(handler); // keyin harf yozilsa, avvalgi timeout to‘xtatiladi
         };
     }, [searcgquery]);
-
-    console.log("🔍 searchTerm:", searcgquery);
 
 
 
@@ -86,7 +108,12 @@ export const AppContextProvider = ({ children }) => {
         searcgquery,
         setSearchQuery,
         isSeller,
-        setIsSeller
+        setIsSeller,
+        debouncedSearchTerm,
+        setDebouncedSearchTerm,
+        AddToCart,
+        setAddToCart,
+        toggleCart
     }
 
     return (

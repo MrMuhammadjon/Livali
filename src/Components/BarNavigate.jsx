@@ -1,16 +1,28 @@
 // BottomNavbar.jsx
 import { Home, Search, Heart, ShoppingCart, User } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
+import { useAppContext } from '../Context/AppContext';
 
-const navItems = [
-  { to: '/', icon: <Home className="w-6 h-6" />, label: 'Home' },
-  { to: '/search', icon: <Search className="w-6 h-6" />, label: 'Search' },
-  { to: '/favorites', icon: <Heart className="w-6 h-6" />, label: 'Favorites' },
-  { to: '/cart', icon: <ShoppingCart className="w-6 h-6" />, label: 'Cart' },
-  { to: '/profile', icon: <User className="w-6 h-6" />, label: 'Profile' },
-];
+
 
 export default function BarNavigate() {
+  const { AddToCart, setAddToCart, toggleCart } = useAppContext();
+
+  const contFoCart = localStorage.getItem('cart');
+  const cartCount = contFoCart ? JSON.parse(contFoCart).length : 0;
+
+  const favorites = localStorage.getItem('favorites')
+  const favoritesCount = favorites ? JSON.parse(favorites).length : 0;
+
+  const navItems = [
+    { to: '/', icon: <Home className="w-6 h-6" />, label: 'Home' },
+    { to: '/search', icon: <Search className="w-6 h-6" />, label: 'Search' },
+    { to: '/favorites', icon: <Heart className="w-6 h-6" />, label: 'Favorites', showCount: favoritesCount},
+    { to: '/cart', icon: <ShoppingCart className="w-6 h-6" />, label: 'Cart', showCount: AddToCart.length },
+    { to: '/profile', icon: <User className="w-6 h-6" />, label: 'Profile' },
+  ];
+
+
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow z-50 rounded-t-3xl px-6 py-2 flex justify-between items-center md:hidden">
       {navItems.map((item) => (
@@ -20,24 +32,27 @@ export default function BarNavigate() {
   );
 }
 
-function NavItem({ to, icon, label }) {
+function NavItem({ to, icon, label, showCount }) {
   return (
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `flex flex-col items-center gap-1 text-xs font-medium transition-colors duration-200 ${
-          isActive ? 'text-white' : 'text-black'
+        `relative flex flex-col items-center gap-1 text-xs font-medium transition-colors duration-200 ${isActive ? 'text-white' : 'text-black'
         }`
       }
     >
       {({ isActive }) => (
         <>
           <div
-            className={`p-2 rounded-full transition-colors ${
-              isActive ? 'bg-black' : 'bg-transparent'
-            }`}
+            className={`p-2 rounded-full relative transition-colors ${isActive ? 'bg-black' : 'bg-transparent'
+              }`}
           >
             {icon}
+            {showCount > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 text-[10px] bg-black text-white rounded-full p-1 px-2">
+                {showCount}
+              </span>
+            )}
           </div>
           <span>{label}</span>
         </>

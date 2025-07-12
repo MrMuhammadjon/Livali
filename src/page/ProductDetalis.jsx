@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useAppContext } from '../Context/AppContext';
 
 const ProductDetalis = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [thumbnail, setThumbnail] = useState("");
-    useEffect(() => {
+  const { AddToCart, setAddToCart, toggleCart } = useAppContext();
+  const isInCart = product && AddToCart?.some(item => item.id === product.id);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
@@ -23,6 +27,10 @@ const ProductDetalis = () => {
         setLoading(false);
       });
   }, [id]);
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(AddToCart));
+  }, [AddToCart]);
 
   if (loading) {
     return (
@@ -117,8 +125,19 @@ const ProductDetalis = () => {
           </ul>
 
           <div className="flex items-center mt-10 gap-4 text-base">
-            <button className="w-full py-3.5 font-medium bg-gray-100 text-gray-800 hover:bg-gray-200 transition">
-              Add to Cart
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                toggleCart(product);
+              }}
+              className={`w-full py-3.5 font-medium ${AddToCart.some(item => item.id === product.id)
+                  ? 'bg-red-100 text-red-700'
+                  : 'bg-gray-100 text-gray-800'
+                } hover:bg-gray-200 transition`}
+            >
+              {AddToCart.some(item => item.id === product.id)
+                ? 'Remove from Cart'
+                : 'Add to Cart'}
             </button>
             <button className="w-full py-3.5 font-medium bg-black text-white hover:bg-white hover:text-black border transition">
               Buy Now
