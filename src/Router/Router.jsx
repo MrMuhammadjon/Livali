@@ -17,11 +17,14 @@ import { useAppContext } from '../Context/AppContext'
 
 
 
+
+
 export default function Router() {
-  const hasVisited = localStorage.getItem('hasVisited') === 'true'
+
+  const hasVisited = localStorage.getItem('hasVisited') === 'true';
 
   if (!hasVisited) {
-    localStorage.setItem('hasVisited', 'true')
+    localStorage.setItem('hasVisited', 'false');
   }
 
   const router = createBrowserRouter([

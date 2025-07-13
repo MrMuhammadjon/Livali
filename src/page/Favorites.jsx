@@ -73,7 +73,11 @@ const Favorites = () => {
             </div>
 
             <button
-              onClick={() => handleRemove(item.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRemove(item.id);
+              }
+              }
               className="absolute top-3 right-3 p-1 rounded-full bg-white bg-opacity-80 group-hover:bg-gray-100 transition-colors duration-200"
               aria-label="Remove"
             >

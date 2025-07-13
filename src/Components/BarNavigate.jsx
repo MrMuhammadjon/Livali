@@ -6,18 +6,12 @@ import { useAppContext } from '../Context/AppContext';
 
 
 export default function BarNavigate() {
-  const { AddToCart, setAddToCart, toggleCart } = useAppContext();
-
-  const contFoCart = localStorage.getItem('cart');
-  const cartCount = contFoCart ? JSON.parse(contFoCart).length : 0;
-
-  const favorites = localStorage.getItem('favorites')
-  const favoritesCount = favorites ? JSON.parse(favorites).length : 0;
+  const { AddToCart, setAddToCart, favorites, toggleCart } = useAppContext();
 
   const navItems = [
     { to: '/', icon: <Home className="w-6 h-6" />, label: 'Home' },
     { to: '/search', icon: <Search className="w-6 h-6" />, label: 'Search' },
-    { to: '/favorites', icon: <Heart className="w-6 h-6" />, label: 'Favorites', showCount: favoritesCount},
+    { to: '/favorites', icon: <Heart className="w-6 h-6" />, label: 'Favorites', showCount: favorites.length },
     { to: '/cart', icon: <ShoppingCart className="w-6 h-6" />, label: 'Cart', showCount: AddToCart.length },
     { to: '/profile', icon: <User className="w-6 h-6" />, label: 'Profile' },
   ];
