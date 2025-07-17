@@ -7,27 +7,31 @@ const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({ name: "", phone: "" });
+  const [form, setForm] = useState({ name: "", phone: "", password: "" });
   const { loading, error } = useSelector((state) => state.auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ VALIDATSIYA: Ism uzunligi
+    // ✅ VALIDATSIYA
     if (form.name.trim().length < 3) {
       alert("Ismingiz kamida 3 ta belgidan iborat bo'lishi kerak.");
       return;
     }
 
-    // ✅ VALIDATSIYA: Telefon raqam faqat raqam va 9-15 belgidan iborat
     if (!/^\d{9,15}$/.test(form.phone)) {
       alert("Telefon raqam faqat raqamlardan iborat bo'lishi va 9-15 ta raqam bo'lishi kerak.");
       return;
     }
 
+    if (form.password.trim().length < 4) {
+      alert("Parol kamida 4 ta belgidan iborat bo'lishi kerak.");
+      return;
+    }
+
     try {
       await dispatch(registerUser(form)).unwrap();
-      navigate('/');
+      navigate("/");
     } catch (err) {
       console.error("Ro'yxatdan o'tishda xatolik:", err);
     }
@@ -55,6 +59,15 @@ const Register = () => {
           className="border border-black py-2 px-4 rounded"
           onChange={(e) => setForm({ ...form, phone: e.target.value })}
         />
+        <input
+          type="password"
+          name="password"
+          required
+          placeholder="Maxfiy kalit"
+          value={form.password}
+          className="border border-black py-2 px-4 rounded"
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+        />
         <button
           type="submit"
           className="bg-black text-white py-2 rounded disabled:opacity-50"
@@ -64,11 +77,12 @@ const Register = () => {
         </button>
         <button
           type="button"
-          onClick={() => navigate('/login')}
+          onClick={() => navigate("/login")}
           className="border border-black py-2 rounded"
         >
           Login
         </button>
+        {error && <p className="text-red-500 text-center">{error}</p>}
       </form>
     </div>
   );

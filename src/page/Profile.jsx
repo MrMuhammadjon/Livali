@@ -1,13 +1,21 @@
+// src/pages/Profile.jsx
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { FiChevronRight, FiBell } from "react-icons/fi";
 import { BiLogOut } from "react-icons/bi";
-import { FaBoxOpen, FaUser, FaMapMarkerAlt, FaCreditCard, FaQuestionCircle, FaHeadphones } from "react-icons/fa";
-import { useDispatch } from "react-redux";
-import { logout } from "../features/auth/authSlice"; // Import your logout action
-
+import {
+  FaBoxOpen,
+  FaUser,
+  FaMapMarkerAlt,
+  FaCreditCard,
+  FaQuestionCircle,
+  FaHeadphones,
+} from "react-icons/fa";
+import { logout } from "../features/auth/authSlice";
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth); // 👈 Foydalanuvchini olish
 
   const menuItems = [
     { icon: <FaBoxOpen />, label: "My Orders" },
@@ -19,17 +27,18 @@ const Profile = () => {
     { icon: <FaHeadphones />, label: "Help Center" },
   ];
 
-
-  
   const handleLogout = () => {
     dispatch(logout());
   };
+
   return (
     <div className="mx-auto bg-gray-100 min-h-screen p-4 text-sm">
       {/* Header */}
       <div className="flex items-center justify-between p-4 bg-white shadow-sm rounded-md mb-2">
         <button>&larr;</button>
-        <h2 className="font-semibold text-lg">Account</h2>
+        <h2 className="font-semibold text-lg">
+          {user?.name ? user.name : "Account"}
+        </h2>
         <FiBell />
       </div>
 
@@ -51,7 +60,10 @@ const Profile = () => {
 
       {/* Logout */}
       <div className="mt-6">
-        <button onClick={handleLogout} className="flex items-center gap-2 text-red-500 text-sm font-medium px-4 py-3 w-full bg-white rounded-md shadow-sm">
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 text-red-500 text-sm font-medium px-4 py-3 w-full bg-white rounded-md shadow-sm"
+        >
           <BiLogOut />
           Logout
         </button>
