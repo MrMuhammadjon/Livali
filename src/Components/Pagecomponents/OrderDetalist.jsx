@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Trash2, Plus, Minus, ArrowRight } from "lucide-react";
-
-
-const initialCart = JSON.parse(localStorage.getItem('cart')) || [];
+import { Trash2, Plus, Minus, ArrowRight, X } from "lucide-react";
 
 const promoCodes = {
   SAVE10: { type: "amount", value: 10 },
@@ -11,15 +8,47 @@ const promoCodes = {
 };
 
 const OrderDetalist = () => {
-  const [cart, setCart] = useState(initialCart);
+  const [cart, setCart] = useState(() => {
+    const saved = localStorage.getItem("cart");
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const [promoInput, setPromoInput] = useState("");
   const [appliedPromo, setAppliedPromo] = useState(null);
   const [error, setError] = useState("");
 
+  // Re-sync cart from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("cart");
+    if (saved) setCart(JSON.parse(saved));
+  }, []);
+
+  // Load promo from localStorage
+  useEffect(() => {
+    const savedPromo = localStorage.getItem("promo");
+    if (savedPromo) setAppliedPromo(JSON.parse(savedPromo));
+  }, []);
+
+  // Save cart changes
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  // Save promo changes
+  useEffect(() => {
+    if (appliedPromo) {
+      localStorage.setItem("promo", JSON.stringify(appliedPromo));
+    } else {
+      localStorage.removeItem("promo");
+    }
+  }, [appliedPromo]);
+
   const updateQty = (id, delta) => {
     setCart((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, qty: Math.max(item.qty + delta, 1) } : item
+        item.id === id
+          ? { ...item, qty: Math.max((item.qty || 1) + delta, 1) }
+          : item
       )
     );
   };
@@ -28,55 +57,34 @@ const OrderDetalist = () => {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const subtotal = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
-
-  const shippingFee = appliedPromo?.type === "freeShipping" ? 0 : 80;
-
-  let discount = 0;
-  if (appliedPromo) {
-    if (appliedPromo.type === "amount") {
-      discount = appliedPromo.value;
-    } else if (appliedPromo.type === "percent") {
-      discount = Math.floor((subtotal * appliedPromo.value) / 100);
-    }
-  }
-
-  const total = subtotal - discount + shippingFee;
-
   const applyPromo = () => {
     const code = promoInput.trim().toUpperCase();
-    if (appliedPromo) {
-      setError("Promo code already applied");
-      return;
-    }
-
     if (promoCodes[code]) {
       setAppliedPromo(promoCodes[code]);
+      setPromoInput("");
       setError("");
     } else {
       setError("Invalid promo code");
     }
   };
 
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
+  const removePromo = () => {
+    setAppliedPromo(null);
+    setError("");
+    setPromoInput("");
+  };
 
-  useEffect(() => {
-    if (appliedPromo) {
-      localStorage.setItem("promo", JSON.stringify(appliedPromo));
-    }
-  }, [appliedPromo]);
+  const subtotal = cart.reduce((acc, item) => acc + item.price * (item.qty || 1), 0);
+  const shippingFee = appliedPromo?.type === "freeShipping" ? 0 : 40;
 
-  useEffect(() => {
-    const savedPromo = localStorage.getItem("promo");
-    if (savedPromo) {
-      setAppliedPromo(JSON.parse(savedPromo));
-    }
-  }, []);
+  let discount = 0;
+  if (appliedPromo?.type === "amount") {
+    discount = appliedPromo.value;
+  } else if (appliedPromo?.type === "percent") {
+    discount = Math.floor((subtotal * appliedPromo.value) / 100);
+  }
 
-  console.log("Cart items:", cart);
-
+  const total = subtotal - discount + shippingFee;
 
   return (
     <div className="p-4 space-y-4 max-w-md mx-auto bg-white min-h-screen">
@@ -97,7 +105,7 @@ const OrderDetalist = () => {
             <div className="flex-1">
               <p className="font-medium text-sm">{item.name}</p>
               <p className="text-base font-semibold mt-1">{item.brand}</p>
-              <p className="text-gray-500 text-xs">{item.description.slice(0, 35)}...</p>
+              <p className="text-gray-500 text-xs">{item.description?.slice(0, 35)}...</p>
               <p className="text-base font-semibold mt-1">${item.price}</p>
               <div className="flex items-center gap-2 mt-2">
                 <button
@@ -109,7 +117,7 @@ const OrderDetalist = () => {
                 >
                   <Minus size={14} />
                 </button>
-                <span className="px-2 text-sm">{item.qty}</span>
+                <span className="px-2 text-sm">{item.qty || 1}</span>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -121,18 +129,18 @@ const OrderDetalist = () => {
                 </button>
               </div>
             </div>
-            <button onClick={(e) => 
-              {
+            <button
+              onClick={(e) => {
                 e.stopPropagation();
                 removeItem(item.id);
-              }
-            } className="text-red-500">
+              }}
+              className="text-red-500"
+            >
               <Trash2 size={20} />
             </button>
           </div>
         ))
       )}
-
 
       {/* Promo Code Input */}
       <div className="pt-2">
@@ -154,7 +162,12 @@ const OrderDetalist = () => {
         </div>
         {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
         {appliedPromo && (
-          <p className="text-green-600 text-sm mt-1">Promo applied ✔</p>
+          <div className="flex items-center justify-between mt-2 text-green-700 bg-green-100 px-3 py-2 rounded-lg">
+            <span>Promo applied ✔</span>
+            <button onClick={removePromo}>
+              <X size={16} className="text-green-700" />
+            </button>
+          </div>
         )}
       </div>
 

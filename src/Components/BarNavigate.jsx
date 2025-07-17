@@ -7,6 +7,7 @@ import { useAppContext } from '../Context/AppContext';
 
 export default function BarNavigate() {
   const { AddToCart, setAddToCart, favorites, toggleCart } = useAppContext();
+  
 
   const navItems = [
     { to: '/', icon: <Home className="w-6 h-6" />, label: 'Home' },

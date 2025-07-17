@@ -14,6 +14,7 @@ export const AppContextProvider = ({ children }) => {
     const [searcgquery, setSearchQuery] = useState("");
     const [isSeller, setIsSeller] = useState(false);
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+    
     const [AddToCart, setAddToCart] = useState(() => {
         const savedcart = localStorage.getItem('cart');
         try {
@@ -68,7 +69,7 @@ export const AppContextProvider = ({ children }) => {
             if (cart) {
                 return prev.filter((item) => item.id !== product.id); // remove
             } else {
-                return [...prev, product]; // add
+                return [...prev, { ...product, qty: 1 }]; // add with qty
             }
         });
     };
