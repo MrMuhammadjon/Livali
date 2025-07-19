@@ -12,6 +12,7 @@ const ProductDetalis = lazy(() => import('../page/ProductDetalis'));
 const SearchPage = lazy(() => import('../page/SearchPage'));
 const Favorites = lazy(() => import('../page/Favorites'));
 const Register = lazy(() => import('../page/Register'));
+const EditProfile = lazy(() => import('../page/componentPgae/EditProfile'))
 import ProtectedRoute from '../Components/ProtectedRoute'
 import { useAppContext } from '../Context/AppContext'
 
@@ -34,7 +35,7 @@ export default function Router() {
       element: hasVisited ? <App /> : <Welcome />,
       errorElement: <ErrorPage />,
       children: [
-        { index: true, element: <Home /> }, // Bosh sahifa uchun
+        { index: true, element: <Home /> },
         { path: 'login', element: <Login /> },
         { path: 'register', element: <Register /> },
         { path: 'search', element: <SearchPage /> },
@@ -47,7 +48,17 @@ export default function Router() {
             <ProtectedRoute>
               <Profil />
             </ProtectedRoute>
-          )
+          ),
+          children: [
+            {
+              path: 'set-profile',
+              element: (
+                <ProtectedRoute>
+                  <EditProfile />
+                </ProtectedRoute>
+              )
+            }
+          ]
         },
         {
           path: 'order',
@@ -55,7 +66,7 @@ export default function Router() {
             <ProtectedRoute>
               <Order />
             </ProtectedRoute>
-          )
+          ),
         }
       ]
     }
